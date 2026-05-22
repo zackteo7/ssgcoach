@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistant Coach Application — The Talent People</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #2354c6;
+      --navy-dark: #1a3f9e;
+      --blue: #4a7de8;
+      --cream: #f6eddb;
+      --cream-dark: #ede2cc;
+      --text: #1a1a1a;
+      --text-muted: #5c5c5c;
+      --text-hint: #8a8a8a;
+      --border: #d8d3cb;
+      --border-light: #ece8e1;
+      --bg: #faf8f5;
+      --white: #ffffff;
+      --success: #0f6e56;
+      --success-bg: #e1f5ee;
+      --danger: #a32d2d;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: var(--navy);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .header-logo-img {
+      height: 36px;
+      width: auto;
+      display: block;
+      border-radius: 4px;
+    }
+    .header-name {
+      font-size: 13px;
+      color: rgba(246,237,219,0.7);
+      letter-spacing: 0.01em;
+    }
+    .header-badge {
+      font-size: 11px;
+      color: rgba(246,237,219,0.45);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: var(--navy);
+      padding: 3.5rem 2rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -80px;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      border: 1px solid rgba(246,237,219,0.07);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; right: 60px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      border: 1px solid rgba(246,237,219,0.05);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.55;
+      margin-bottom: 1rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 1px;
+      background: currentColor;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .hero-sub {
+      font-size: 14px;
+      color: rgba(246,237,219,0.6);
+      line-height: 1.7;
+      max-width: 540px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 1.25rem;
+    }
+    .hero-tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 100px;
+      border: 1px solid rgba(246,237,219,0.2);
+      color: rgba(246,237,219,0.65);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Progress indicator ── */
+    .progress-bar-wrap {
+      background: var(--white);
+      border-bottom: 1px solid var(--border-light);
+      padding: 0 2rem;
+    }
+    .progress-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0;
+    }
+    .prog-step {
+      flex: 1;
+      padding: 14px 0 12px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--text-hint);
+      text-align: center;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .prog-step.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+    .prog-step.done {
+      color: var(--success);
+      border-bottom-color: var(--success);
+    }
+
+    /* ── Main layout ── */
+    .main {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 5rem;
+    }
+
+    /* ── Section ── */
+    .form-section {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1.25rem;
+      animation: fadeUp 0.3s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .form-section:nth-child(2) { animation-delay: 0.05s; }
+    .form-section:nth-child(3) { animation-delay: 0.1s; }
+    .form-section:nth-child(4) { animation-delay: 0.15s; }
+    .form-section:nth-child(5) { animation-delay: 0.2s; }
+    .form-section:nth-child(6) { animation-delay: 0.25s; }
+    .form-section:nth-child(7) { animation-delay: 0.3s; }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .section-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-icon svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--cream);
+      fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .section-head h2 {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+    .section-head p {
+      font-size: 12px;
+      color: var(--text-hint);
+      margin-top: 1px;
+    }
+
+    /* ── Fields ── */
+    .field { margin-bottom: 1rem; }
+    .field:last-child { margin-bottom: 0; }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+
+    label.field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+    label.field-label .req {
+      color: #c0392b;
+      margin-left: 2px;
+      font-weight: 400;
+    }
+    label.field-label .opt {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-hint);
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 13px;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="date"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(35,84,198,0.1);
+      background: var(--white);
+    }
+    input::placeholder, textarea::placeholder { color: var(--text-hint); }
+    textarea { resize: vertical; min-height: 90px; line-height: 1.55; }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235c5c5c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 11px center;
+      padding-right: 34px;
+      cursor: pointer;
+    }
+    .hint { font-size: 12px; color: var(--text-hint); margin-top: 4px; line-height: 1.5; }
+
+    /* ── Cert cards ── */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 480px) { .cert-grid { grid-template-columns: 1fr; } }
+
+    .cert-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid var(--border-light);
+      border-radius: 9px;
+      padding: 11px 13px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      background: var(--bg);
+    }
+    .cert-card:hover { border-color: var(--border); }
+    .cert-card input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; accent-color: var(--navy); width: 15px; height: 15px; cursor: pointer; }
+    .cert-card:has(input:checked) {
+      border-color: var(--navy);
+      background: rgba(35,84,198,0.06);
+    }
+    .cert-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .cert-sub { font-size: 11px; color: var(--text-hint); margin-top: 2px; }
+
+    /* ── Sport checkboxes ── */
+    .sport-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px 10px;
+    }
+    @media (max-width: 480px) { .sport-grid { grid-template-columns: 1fr 1fr; } }
+    .sport-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      padding: 5px 0;
+    }
+    .sport-item input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      accent-color: var(--navy);
+      cursor: pointer;
+    }
+
+    /* ── Consent ── */
+    .consent-wrap {
+      background: var(--bg);
+      border: 1px solid var(--border-light);
+      border-radius: 9px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .consent-wrap:has(input:checked) { border-color: var(--navy); }
+    .consent-wrap input[type="checkbox"] {
+      margin-top: 3px;
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--navy);
+      cursor: pointer;
+    }
+    .consent-wrap p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ── Submit ── */
+    .submit-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .btn-submit {
+      background: var(--navy);
+      color: var(--cream);
+      border: none;
+      border-radius: 8px;
+      padding: 12px 32px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      transition: background 0.15s, transform 0.1s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-submit:hover { background: var(--navy-dark); }
+    .btn-submit:active { transform: scale(0.985); }
+    .btn-submit:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .btn-submit .spinner {
+      display: none;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(246,237,219,0.3);
+      border-top-color: var(--cream);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-submit.loading .spinner { display: inline-block; }
+    .submit-note {
+      font-size: 12px;
+      color: var(--text-hint);
+      line-height: 1.5;
+    }
+    .submit-note strong { color: var(--text-muted); }
+
+    /* ── Success ── */
+    .success-page {
+      display: none;
+      text-align: center;
+      padding: 4rem 2rem;
+      animation: fadeUp 0.4s ease;
+    }
+    .success-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--navy);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+    .success-icon svg {
+      width: 24px; height: 24px;
+      stroke: var(--cream);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .success-page h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .success-page p {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── Required note ── */
+    .required-note {
+      font-size: 12px;
+      color: var(--text-hint);
+      margin-bottom: 1.5rem;
+    }
+    .required-note span { color: #c0392b; }
+
+    /* ── Footer ── */
+    .site-footer {
+      background: var(--navy);
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+    .site-footer p {
+      font-size: 12px;
+      color: rgba(246,237,219,0.4);
+      line-height: 1.7;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .main { padding: 1.5rem 1rem 4rem; }
+      .form-section { padding: 1.25rem; }
+      .hero { padding: 2.5rem 1.25rem 2rem; }
+      .site-header { padding: 0 1.25rem; }
+      .sport-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header — replace the SVG logo below with your actual logo image -->
+  <header class="site-header">
+    <div class="header-brand">
+      <img src="data:image/png;base64,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" alt="The Talent People" class="header-logo-img">
+      
+    </div>
+    <span class="header-badge">EA License No. 24C2589</span>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Sport Singapore · ITT SSC000ETT22000021</div>
+      <h1>Assistant Coach<br>Application</h1>
+      <p class="hero-sub">We are sourcing qualified coaches for Sport Development Group programmes across ActiveSG Academies &amp; Clubs, SportCares, SSP, JSA, FLP, and Nurture Kids — contract up to March 2028.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">ActiveSG A&amp;Cs</span>
+        <span class="hero-tag">SportCares</span>
+        <span class="hero-tag">SSP / JSA / FLP</span>
+        <span class="hero-tag">Nurture Kids</span>
+        <span class="hero-tag">Disability &amp; Inclusion</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <main class="main" id="mainContent">
+
+    <p class="required-note">Fields marked <span>*</span> are required.</p>
+
+    <form id="appForm" novalidate>
+
+      <!-- 1. Personal details -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div>
+            <h2>Personal details</h2>
+            <p>Your basic information</p>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Full name (as per NRIC) <span class="req">*</span></label>
+            <input type="text" name="full_name" required placeholder="e.g. Tan Wei Ming">
+          </div>
+          <div class="field">
+            <label class="field-label">Preferred name <span class="opt">(optional)</span></label>
+            <input type="text" name="preferred_name" placeholder="e.g. Wei Ming">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Mobile number <span class="req">*</span></label>
+            <input type="tel" name="mobile" required placeholder="+65 9XXX XXXX">
+          </div>
+          <div class="field">
+            <label class="field-label">Email address <span class="req">*</span></label>
+            <input type="email" name="email" required placeholder="you@email.com">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Date of birth <span class="req">*</span></label>
+            <input type="date" name="dob" required>
+          </div>
+          <div class="field">
+            <label class="field-label">Nationality / Work status <span class="req">*</span></label>
+            <select name="work_status" required>
+              <option value="">Select…</option>
+              <option>Singapore Citizen</option>
+              <option>Singapore PR</option>
+              <option>Employment Pass</option>
+              <option>S Pass</option>
+              <option>Work Permit</option>
+              <option>Long Term Visit Pass</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Certifications -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+          </div>
+          <div>
+            <h2>Mandatory certifications</h2>
+            <p>All four required — tick only what you currently hold</p>
+          </div>
+        </div>
+
+        <div class="cert-grid">
+          <label class="cert-card">
+            <input type="checkbox" name="cert_nroc" value="Yes">
+            <div>
+              <div class="cert-title">NROC Membership</div>
+              <div class="cert-sub">Provisional or above</div>
+            </div>
+          </label>
+          <label class="cert-card">
+            <input type="checkbox" name="cert_sfa" value="Yes">
+            <div>
+              <div class="cert-title">Standard First Aid (SFA)</div>
+              <div class="cert-sub">Valid certificate</div>
+            </div>
+          </label>
+          <label class="cert-card">
+            <input type="checkbox" name="cert_vps" value="Yes">
+            <div>
+              <div class="cert-title">Values &amp; Principles in Sport (VPS)</div>
+              <div class="cert-sub">Or equivalent</div>
+            </div>
+          </label>
+          <label class="cert-card">
+            <input type="checkbox" name="cert_safesport" value="Yes">
+            <div>
+              <div class="cert-title">Safe Sport Certification</div>
+              <div class="cert-sub">By CoachSG</div>
+            </div>
+          </label>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">NROC membership number <span class="req">*</span></label>
+            <input type="text" name="nroc_number" required placeholder="e.g. NROC-XXXXXX">
+          </div>
+          <div class="field">
+            <label class="field-label">NROC certification level <span class="req">*</span></label>
+            <select name="nroc_level" required>
+              <option value="">Select…</option>
+              <option>Provisional Coach</option>
+              <option>Coach</option>
+              <option>Senior Coach</option>
+              <option>Master Coach</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Sport specialisation -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M12 2a14.5 14.5 0 0 1 0 20M2 12h20"/></svg>
+          </div>
+          <div>
+            <h2>Sport specialisation</h2>
+            <p>Select all sports you can coach</p>
+          </div>
+        </div>
+
+        <div class="sport-grid">
+          <label class="sport-item"><input type="checkbox" name="sport" value="Football"> Football</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Basketball"> Basketball</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Athletics"> Athletics</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Hockey"> Hockey</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Floorball"> Floorball</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Volleyball"> Volleyball</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Canoe"> Canoe</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Badminton"> Badminton</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Table Tennis"> Table Tennis</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Tennis"> Tennis</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Gymnastics"> Gymnastics</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Water Polo"> Water Polo</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Taekwondo"> Taekwondo</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Silat"> Silat</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Flying Disc"> Flying Disc</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Street Dance"> Street Dance</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="Nurture Kids"> Nurture Kids</label>
+          <label class="sport-item"><input type="checkbox" name="sport" value="SportCares"> SportCares</label>
+        </div>
+      </div>
+
+      <!-- 4. Coaching experience -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <h2>Coaching experience</h2>
+            <p>Tell us about your background</p>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Years of coaching experience <span class="req">*</span></label>
+            <select name="years_experience" required>
+              <option value="">Select…</option>
+              <option>Less than 1 year</option>
+              <option>1–2 years</option>
+              <option>3–5 years</option>
+              <option>6–10 years</option>
+              <option>More than 10 years</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">Experience coaching children / youth</label>
+            <select name="youth_experience">
+              <option value="">Select…</option>
+              <option>Yes — primary school age</option>
+              <option>Yes — secondary / JC age</option>
+              <option>Yes — both age groups</option>
+              <option>No</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Coaching background <span class="req">*</span></label>
+          <textarea name="coaching_background" required placeholder="Describe your coaching history: where you coached, programmes delivered, age groups, any national team or competition experience, school partnerships, etc."></textarea>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Experience with special needs / disability programmes</label>
+          <select name="disability_experience">
+            <option value="">Select…</option>
+            <option>Yes — extensive (para sport, D&amp;I programmes)</option>
+            <option>Yes — some exposure</option>
+            <option>No, but open to it</option>
+            <option>No</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 5. Availability & rate -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div>
+            <h2>Availability &amp; rate</h2>
+            <p>When you can start and what you expect</p>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Earliest available date <span class="req">*</span></label>
+            <input type="date" name="available_from" required>
+          </div>
+          <div class="field">
+            <label class="field-label">Expected hourly rate (S$) <span class="req">*</span></label>
+            <input type="text" name="expected_rate" required placeholder="e.g. S$35/hr">
+            <p class="hint">Rates are tiered by NROC level. Quote your expected rate.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Preferred working days / times <span class="opt">(optional)</span></label>
+          <textarea name="availability" placeholder="e.g. Weekday evenings after 5pm, Saturday mornings — flexible on venue locations"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Willing to travel overseas for programmes?</label>
+          <select name="overseas_travel">
+            <option value="">Select…</option>
+            <option>Yes — fully willing</option>
+            <option>Depends on duration</option>
+            <option>No</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 6. Additional info -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div>
+            <h2>Additional information</h2>
+            <p>Languages, qualifications, and references</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Languages spoken (beyond English) <span class="opt">(optional)</span></label>
+          <input type="text" name="languages" placeholder="e.g. Mandarin, Malay, Tamil">
+        </div>
+
+        <div class="field">
+          <label class="field-label">Other qualifications / certifications <span class="opt">(optional)</span></label>
+          <textarea name="other_certs" placeholder="Any other relevant certifications, degrees, sports science background, or professional development courses"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Reference contact <span class="opt">(optional)</span></label>
+          <input type="text" name="reference" placeholder="Name, role, organisation, phone or email">
+        </div>
+      </div>
+
+      <!-- 7. PDPA Consent -->
+      <div class="form-section">
+        <div class="section-head">
+          <div class="section-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div>
+            <h2>Data consent</h2>
+            <p>Required before submitting</p>
+          </div>
+        </div>
+
+        <label class="consent-wrap">
+          <input type="checkbox" name="pdpa_consent" value="Yes" id="pdpaCheck" required>
+          <p>I consent to <strong>The Talent People Pte. Ltd.</strong> (EA License No. 24C2589) collecting, using, and disclosing my personal data for the purposes of this job application, candidate evaluation, and submission to Sport Singapore under ITT SSC000ETT22000021, in accordance with the Personal Data Protection Act (PDPA) 2012. I understand my data will not be shared with third parties beyond what is necessary for this recruitment process.</p>
+        </label>
+
+        <div class="submit-section" style="margin-top: 1.25rem;">
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span class="spinner" id="spinner"></span>
+            <span id="btnText">Submit application</span>
+          </button>
+          <p class="submit-note">
+            <strong>Secure submission</strong><br>
+            Your data is sent directly to TTP via Formspree.
+          </p>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- Success state -->
+    <div class="success-page" id="successPage">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Application received</h2>
+      <p>Thank you for applying. Our team will review your details and be in touch if your profile is a match for current programme needs.</p>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>
+      The Talent People Pte. Ltd. &nbsp;·&nbsp; EA License No. 24C2589 &nbsp;·&nbsp; 75 High St, Singapore 179435<br>
+      Tender Ref: SSC000ETT22000021 &nbsp;·&nbsp; Sport Singapore Sport Development Group
+    </p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('appForm');
+    const btn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const spinner = document.getElementById('spinner');
+    const successPage = document.getElementById('successPage');
+    const mainContent = document.getElementById('mainContent');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const pdpa = document.getElementById('pdpaCheck');
+      if (!pdpa.checked) {
+        alert('Please read and confirm your PDPA consent before submitting.');
+        pdpa.closest('.consent-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Basic required field check
+      const required = form.querySelectorAll('[required]');
+      let firstEmpty = null;
+      for (const el of required) {
+        if (!el.value.trim()) {
+          if (!firstEmpty) firstEmpty = el;
+          el.style.borderColor = '#c0392b';
+        } else {
+          el.style.borderColor = '';
+        }
+      }
+      if (firstEmpty) {
+        firstEmpty.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstEmpty.focus();
+        return;
+      }
+
+      // Collect sports (checkboxes)
+      const sports = Array.from(form.querySelectorAll('input[name="sport"]:checked')).map(cb => cb.value);
+
+      // Build FormData
+      const data = new FormData(form);
+      // Override sport[] with comma-joined string for Formspree readability
+      data.delete('sport');
+      data.append('sports_selected', sports.length ? sports.join(', ') : 'None selected');
+
+      btn.disabled = true;
+      spinner.style.display = 'inline-block';
+      btnText.textContent = 'Submitting…';
+
+      try {
+        const resp = await fetch('https://formspree.io/f/xlgvnrej', {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (resp.ok) {
+          form.style.display = 'none';
+          successPage.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          const json = await resp.json().catch(() => ({}));
+          const msg = (json.errors || []).map(e => e.message).join(', ') || 'Submission failed. Please try again.';
+          alert(msg);
+          btn.disabled = false;
+          spinner.style.display = 'none';
+          btnText.textContent = 'Submit application';
+        }
+      } catch (err) {
+        alert('Network error. Please check your connection and try again.');
+        btn.disabled = false;
+        spinner.style.display = 'none';
+        btnText.textContent = 'Submit application';
+      }
+    });
+
+    // Clear red borders on input
+    form.querySelectorAll('input, select, textarea').forEach(el => {
+      el.addEventListener('input', () => { el.style.borderColor = ''; });
+    });
+  </script>
+
+</body>
+</html>
